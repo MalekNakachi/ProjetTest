@@ -1,0 +1,77 @@
+<mat-card class="mat-elevation-z5" style="width: 80%; margin: auto; margin-bottom: 10px; background: url('assets/water.png'), linear-gradient(to right, #6093c16b,#2d6aa0); background-size: cover;">
+  <mat-card-title style="text-align: right;align-item: right; color: #ffffff;">
+    <div style=" display: flex; justify-content: space-between; width: 60%">
+      <div style="display: inline-block; text-align: center;">
+        <a target="_blank" style="color: white;" href="http://www.onas.nat.tn/Fr/index.php?code=3"><strong>Création BonCommande</strong><p style="font-family: Roboto">G.A</p></a>
+      </div>
+      <div style="display: inline-block; text-align: center;">
+        <button style="float: right; background-color: #435e6b; border-color:#435e6b;"   (click)="identifier()" *ngIf="bonCommande.identifiant === null" type="button" name="btn" role="button" class="btn btn-primary" >
+          <i aria-hidden="true" class=" fa fa-drivers-license" title="S'identifier"> </i>
+        </button>
+        <p style="color: white;" *ngIf="bonCommande.identifiant !== null">{{bonCommande.identifiant}}</p>
+      </div>
+    </div>
+  </mat-card-title>
+
+</mat-card >
+
+
+<mat-card class="mat-elevation-z5" style="width: 80%; margin: auto; margin-bottom: 10px;">
+  <mat-card-content>
+    <div class="row">
+      <div class="col-md-12" style="display: flex;justify-content: center;">
+        <dx-data-grid id="gridContainer"
+                      [dataSource]="demandes"
+                      [showBorders]="true"
+                      [remoteOperations]="true"
+                      [masterDetail]="{ enabled: true, template: 'detail' }">
+          >
+          <dxo-selection
+            [showCheckBoxesMode]="true"
+            mode="multiple"
+          ></dxo-selection>
+
+          <dxi-column dataField="id" caption="ID" [filterOperations]="['contains']"[visible]="false"></dxi-column>
+          <dxi-column dataField="identifiant" caption="Identifiant" [filterOperations]="['contains']"[visible]="true" cssClass="pointer-column" cellTemplate="linkcellTemplate"></dxi-column>
+          <dxi-column dataField="date" caption="Date Demande"  [filterOperations]="['contains']"></dxi-column>
+          <dxi-column dataField="listedesproduits" caption="Produits" [filterOperations]="['contains']"></dxi-column>
+          <dxi-column dataField="quantite" caption="Qte" [filterOperations]="['contains']"></dxi-column>
+          <dxi-column dataField="quantite_commande" caption="Qte Comandé"[filterOperations]="['contains']"></dxi-column>
+          <dxi-column dataField="description" caption="Description"[filterOperations]="['contains']"></dxi-column>
+
+
+          <dxi-column dataField="email" caption="E-mail"   [filterOperations]="['contains']"></dxi-column>
+          <dxi-column dataField="serviceDep" caption="Departement"  [filterOperations]="['contains']"></dxi-column>
+          <dxi-column dataField="nomDemandeur" caption="Demandeur" dataType="number" [filterOperations]="['contains']"></dxi-column>
+          <dxi-column dataField="tel" caption="tel" dataType="N°Tel" [filterOperations]="['contains']"></dxi-column>
+          <dxi-column dataField="status" caption="status"  [filterOperations]="['contains']"></dxi-column>
+          <dxo-paging [pageSize]="12"></dxo-paging>
+          <dxo-pager
+            [showPageSizeSelector]="true"
+            [allowedPageSizes]="[8, 12, 20]"
+          ></dxo-pager>
+
+
+
+          <div *dxTemplate="let data of 'detail'" >
+            <activity-grid [id]="data.data.id" ></activity-grid>
+          </div>
+
+          <div *dxTemplate="let data of 'otherTemplate'">
+          </div>
+        </dx-data-grid>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<div style="float: right;" style="width: 80%; margin: auto;" [hidden]="mode" >
+  <button type="button" [disabled]="bonCommande.identifiant === null"
+          class="btn btn-primary btn-rounded w-200p mb-1 mr-1 butttons-style"
+          style="float: right;font-size: 85%;"
+          (click)="createBonCommande(bonCommande)">Créer Bon Commande</button>
+</div>
+
+
+
+

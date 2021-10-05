@@ -1,0 +1,65 @@
+<nav class="navbar box-shadow app-header" [class.fixed-top]="settings.theme.navbarIsFixed" [dir]="textrtl"
+     [class.logo-visible]="showInfoContent">
+    <div class="d-flex flex-column w-100">
+        <div id="info-content" class="panel-collapse collapse">
+            <a class="close" data-toggle="collapse" href="#info-content" (click)="showInfoContent = !showInfoContent"
+               [class.show]="showInfoContent">
+                <span aria-hidden="true">&times;</span>
+            </a>
+        </div>
+        <div class="d-flex justify-content-start align-items-center top-navbar">
+
+            <a class="logo" routerLink="/" (click)="closeSubMenus()">
+                <img class="logo-imgg start" src="assets/logoTemp.png" alt="logo">
+                <!--<img class="logo-imgg" [hidden]="settings.showMenu" src="assets/logo.png" alt="logo">-->
+                <!--<span class="lloyd-assurancee" [hidden]="settings.showMenu">-->
+                    <!--<h3 class="lloydd">Lloyd Tunisie</h3>-->
+                    <!--<h6 class="assurancee">assurance</h6>-->
+                <!--</span>-->
+            </a>
+
+            <span class="navbar-text menu-icon transition ml-3 mr-3" [ngClass]="{'open': settings.theme.showMenu}"
+                  (click)="settings.theme.showMenu = !settings.theme.showMenu">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </span>
+
+            <!--<form class="app-search d-none d-md-inline-block ml-3">-->
+            <!--<i class="fa fa-search"></i>-->
+            <!--<input type="text" placeholder="Type to search..." class="form-control">-->
+            <!--</form>-->
+
+            <!--<app-favorites class="d-none d-lg-inline-block"></app-favorites>-->
+
+            <div class="top-rigth-icons ml-auto">
+                <span class="d-none d-sm-inline-block" title="Langue d'affichage">
+                    <app-flags-menu></app-flags-menu>
+                </span>
+               <!-- <span class="d-none d-sm-inline-block">
+                    <app-fullscreen></app-fullscreen>
+                </span>-->
+                <span class="d-none d-sm-inline-block" style="color: #026b75">
+                  {{usernameconnect}}
+                </span>
+                <span class="d-none d-sm-inline-block">
+                    <app-user-menu></app-user-menu>
+                </span>
+                <span class="pl-2 pr-2">
+                    <a routerLink="/login" (click)="signOut()">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    </a>
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="horizontal-menu-outer" *ngIf="settings.theme.menu == 'horizontal'">
+            <app-horizontal-menu *ngIf="showHorizontalMenu" [menuItems]="menuItems"></app-horizontal-menu>
+            <app-vertical-menu *ngIf="!showHorizontalMenu" [menuItems]="menuItems"></app-vertical-menu>
+        </div>
+
+    </div>
+</nav>

@@ -1,0 +1,52 @@
+
+
+<dx-data-grid #grid id="gridContainer" [dataSource]="articles" keyExpr="codeclient"
+              [allowColumnReordering]="true"
+              [allowColumnResizing]="true"
+              (onRowInserting)="onAdd($event)"
+              keyExpr="id"
+              [showBorders]="true"
+              [rowAlternationEnabled]="true"
+              [remoteOperations]="true"
+              (onSelectionChanged)="selectedChanged($event,grid.instance.getSelectedRowsData()[0])"
+              [showColumnLines]="false"
+              [showRowLines]="false"
+>
+
+  <!--    <dxo-scrolling mode="virtual" ></dxo-scrolling>-->
+  <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+  <dxo-load-panel [enabled]="true"></dxo-load-panel>
+  <!--   <dxo-group-panel [visible]="true"></dxo-group-panel>-->
+  <dxo-selection mode="single"></dxo-selection>
+  <dxi-column dataField="id" caption="ID" [filterOperations]="['contains']"[visible]="false"></dxi-column>
+  <dxi-column dataField="identifiant" caption="Identifiant" [filterOperations]="['contains']"[visible]="true" cssClass="pointer-column" cellTemplate="linkcellTemplate"></dxi-column>
+  <dxi-column dataField="nom" caption="Nom Article" [filterOperations]="['contains']"></dxi-column>
+  <dxi-column dataField="prixHt" caption="Prix" dataType="number" format="currency" [filterOperations]="['contains']"></dxi-column>
+  <dxi-column dataField="quantite" caption="Quantité" dataType="number" [filterOperations]="['contains']"></dxi-column>
+  <dxi-column dataField="staut" caption="Statut" [filterOperations]="['contains']"></dxi-column>
+
+  <dxo-paging [pageSize]="25"></dxo-paging>
+  <dxo-pager [showPageSizeSelector]="true" [visible]="true" [allowedPageSizes]="[25, 50, 100,150]"[showInfo]="true"></dxo-pager>
+  <dxo-sorting mode="multiple"></dxo-sorting>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxo-header-filter [visible]="true"></dxo-header-filter>
+  <dxo-search-panel [visible]="true" [width]="240" placeholder="Rechercher..."></dxo-search-panel>
+  <dxo-group-panel [visible]="false"></dxo-group-panel>
+  <dxo-grouping #expand [autoExpandAll]="false"></dxo-grouping>
+
+
+
+  <div *dxTemplate="let data of 'linkcellTemplate'; let i of index">
+    <a   href="javascript: void(0)"><i (click)="openForm(data.data)" class="la la-trash">{{data.data.identifiant}}</i></a>
+  </div>
+</dx-data-grid>
+
+<dx-speed-dial-action
+  style=": center"
+  label=""
+  icon="add"
+  hint="Ajouter article"
+  (onClick)="createArticle()">
+</dx-speed-dial-action>
+
+

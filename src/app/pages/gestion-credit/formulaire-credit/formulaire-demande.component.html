@@ -1,0 +1,332 @@
+<mat-card class="mat-elevation-z5" style="width: 80%; margin: auto; margin-bottom: 10px; background: url('assets/water.png'), linear-gradient(to right, #6093c16b,#2d6aa0); background-size: cover;">
+  <mat-card-title style="text-align: right;align-item: right; color: #ffffff;">
+    <div style=" display: flex; justify-content: space-between; width: 60%">
+      <div style="display: inline-block; text-align: center;">
+        <a target="_blank" style="color: white;" ><strong>Création Demande  </strong>
+          <a class="btn btn-white " (click)="openDiagramModal(modalDiagram)">
+          <i class="fa fa-sitemap fabar my-2 my-sm-0" aria-hidden="true" style="color: #3f87a6;"
+             title="WorkFlow Viewer" ></i>
+        </a></a>
+      </div>
+      <div style="display: inline-block; text-align: center;">
+        <button style="float: right; background-color: #435e6b; border-color:#435e6b;"   (click)="identifier()" *ngIf="demande.identifiant === null" type="button" name="btn" role="button" class="btn btn-primary" >
+          <i aria-hidden="true" class=" fa fa-drivers-license" title="S'identifier"> </i>
+        </button>
+        <p style="color: white;" *ngIf="demande.identifiant !== null">{{demande.identifiant}}</p>
+      </div>
+    </div>
+  </mat-card-title>
+
+</mat-card >
+
+
+<mat-card class="mat-elevation-z5" style="width: 80%; margin: auto; margin-bottom: 10px;">
+  <mat-card-content>
+    <div class="row">
+      <div class="col-md-6" style="display: flex;justify-content: center;">
+        <div class="dx-field"  style="width: 100%;">
+          <div class="dx-field-label">List des Departements</div>
+          <div class="dx-field-value">
+            <dx-tag-box
+              [items]="departements"
+              [(ngModel)]="selectedDepartements"
+              [searchEnabled]="true"
+              [disabled]="mode" style="width: 80%;">
+            </dx-tag-box>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" style="display: flex;justify-content: center;">
+        <div class="dx-field"  style="width: 100%;">
+          <div class="dx-field-label">List des Demandeurs</div>
+          <div class="dx-field-value">
+            <dx-tag-box
+              [items]="demandeurs"
+              [(ngModel)]="selectedDemandeurs"
+              [searchEnabled]="true"
+              [disabled]="mode"  style="width: 80%;">
+            </dx-tag-box>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card class="mat-elevation-z5" style="width: 80%; margin: auto; margin-bottom: 10px;">
+  <mat-card-content>
+    <div class="row" style="display: flex; justify-content: space-around">
+      <div class="col-md-3">
+        <div style="display: flex; justify-content: space-around;">
+          <mat-form-field style="width: 100%">
+            <mat-label>Date Demande</mat-label>
+            <input matInput matNativeControl  [matDatepicker]="dp1"  [disabled]="mode"  [(ngModel)]="demande.date" style="width: 80%;">
+            <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+            <mat-datepicker #dp1></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div style="display: flex; justify-content: space-around;">
+          <mat-form-field style="width: 100%">
+            <mat-label>N° Tel</mat-label>
+            <input matInput type="number" matNativeControl class="example-right-align" [disabled]="mode" [(ngModel)]="demande.tel" style="width: 100%;">
+            <mat-icon matSuffix>ballot</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div style="display: flex; justify-content: space-around;">
+          <mat-form-field style="width: 100%">
+            <mat-label>E-mail</mat-label>
+            <input matInput matNativeControl class="example-right-align" [disabled]="mode" [(ngModel)]="demande.email" style="width: 100%;">
+            <mat-icon matSuffix>ballot</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+<mat-card class="mat-elevation-z5" style="width: 80%; margin: auto; margin-bottom: 10px;">
+  <mat-card-content>
+    <div class="row">
+      <div class="col-md-12">
+      <dx-data-grid
+        id="grid-container1" #grid
+        [dataSource]="articles"
+        [showBorders]="true"
+        (onSelectionChanged)="selectedChanged($event,grid.instance.getSelectedRowsData())"
+
+
+
+
+      >
+        <dxo-paging [enabled]="false"></dxo-paging>
+        <dxo-editing
+          mode="popup"
+          [allowUpdating]="false"
+          [allowDeleting]="false"
+          [allowAdding]="false">
+          <dxo-popup
+            title="deposer offre"
+            [showTitle]="true"
+            [width]="1000">
+          </dxo-popup>
+        </dxo-editing>
+        <dxo-selection
+
+          mode="multiple"
+        ></dxo-selection>
+        <dxo-paging
+          [pageSize]="10"
+        ></dxo-paging>
+        <dxo-filter-row
+          [visible]="true"
+        ></dxo-filter-row>
+        <dxi-column dataField="identifiant" caption="Référence" [filterOperations]="['contains']"
+                    [visible]="true" cssClass="pointer-column" cellTemplate="linkcellTemplate"></dxi-column>
+        <dxi-column
+          dataField="nom"
+          [width]="250"
+        ></dxi-column>
+        <dxi-column
+          dataField="prixHt"
+          caption="Prix"
+          dataType="number"
+          format="currency"
+        ></dxi-column>
+
+        <dxi-column
+          dataField="quantite"
+          caption="Quantité"
+          dataType="number"
+          format="currency"
+        ></dxi-column>
+        <dxi-column
+          dataField="staut"
+          caption="Statut"
+        ></dxi-column>
+
+        <div *dxTemplate="let data of 'linkcellTemplate'; let i of index">
+          <a   href="javascript: void(0)"><i (click)="openForm(data.data)" class="la la-trash">{{data.data.identifiant}}</i></a>
+        </div>
+      </dx-data-grid>
+      </div>
+
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="mat-elevation-z5" style="width: 80%; margin: auto; margin-bottom: 10px;">
+  <mat-card-content>
+    <div class="row">
+      <div class="col-md-12">
+        <dx-data-grid
+                id="grid-container" #grid2
+                [dataSource]="offres"
+                [showBorders]="true"
+                (onSelectionChanged)="selectedChanged12($event,grid2.instance.getSelectedRowsData())"
+
+
+        >
+          <dxo-paging [enabled]="false"></dxo-paging>
+          <dxo-editing
+                  mode="popup"
+                  [allowUpdating]="false"
+                  [allowDeleting]="false"
+                  [allowAdding]="false">
+            <dxo-popup
+                    title="deposer offre"
+                    [showTitle]="true"
+                    [width]="1000">
+            </dxo-popup>
+          </dxo-editing>
+          <dxo-selection
+
+                  mode="multiple"
+          ></dxo-selection>
+          <dxo-paging
+                  [pageSize]="10"
+          ></dxo-paging>
+          <dxo-filter-row
+                  [visible]="true"
+          ></dxo-filter-row>
+          <dxi-column dataField="id" caption="ID" [filterOperations]="['contains']"[visible]="false"></dxi-column>
+          <dxi-column dataField="identifiant" caption="Identifiant" [filterOperations]="['contains']"[visible]="true" cssClass="pointer-column" cellTemplate="linkcellTemplate"></dxi-column>
+          <dxi-column dataField="date" caption="Date Offre" [filterOperations]="['contains']"></dxi-column>
+          <dxi-column dataField="nomFournisseur" caption="Nom Fournisseur" [filterOperations]="['contains']"></dxi-column>
+          <dxi-column dataField="listeDesProduits" caption="Produits" [filterOperations]="['contains']"></dxi-column>
+          <dxi-column dataField="prix" caption="Prix" dataType="number" format="currency" [filterOperations]="['contains']"></dxi-column>
+          <dxi-column dataField="lieuDeLivraison" caption="Lieu de Livraison" alignment="center" [filterOperations]="['contains']"></dxi-column>
+          <dxi-column dataField="description" caption="Description" [filterOperations]="['contains']"></dxi-column>
+
+          <div *dxTemplate="let data of 'linkcellTemplate'; let i of index">
+            <a   href="javascript: void(0)"><i (click)="openForm(data.data)" class="la la-trash">{{data.data.identifiant}}</i></a>
+          </div>
+        </dx-data-grid>
+      </div>
+
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+<!--
+<mat-card class="mat-elevation-z5" style="width: 80%; margin: auto;margin-bottom: 10px;">
+  <mat-card-content>
+    <div style="display: flex; justify-content: space-around">
+      <div id="LectPersonne" style="width: 40%;">
+        <div style="float:left;width: 90%;">
+          <div class="dx-field">
+            <div class="dx-field-label">Affecter a</div>
+            <div class="dx-field-value">
+              <dx-tag-box
+                [items]="listAuthPersonne"
+                [(ngModel)]="listSelectedAuthPersonne"
+                [searchEnabled]="true"
+                [disabled]="mode" >
+              </dx-tag-box>
+            </div>
+          </div>
+        </div>
+        <div style="float:left;margin-left: 1%;">
+          <span class="input-group-text"><i class="fa fa-user" style="font-size:20px"></i> </span>
+        </div>
+      </div>
+      <br>
+      <div id="AuthPersonne" style="width: 40%;">
+        <div style="float:left;width: 90%;">
+          <div class="dx-field">
+            <div class="dx-field-label">Encopie</div>
+            <div class="dx-field-value">
+              <dx-tag-box
+                [items]="listLectPersonne"
+                [(ngModel)]="listSelectedLectPersonne"
+                [searchEnabled]="true"
+                [disabled]="mode" >
+              </dx-tag-box>
+            </div>
+          </div>
+        </div>
+        <div style="float:left;margin-left: 1%;">
+          <span class="input-group-text"><i class="fa fa-user" style="font-size:20px"></i> </span>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>-->
+
+<mat-card class="mat-elevation-z5" style="width: 80%; margin: auto;margin-bottom: 10px;">
+  <mat-card-content>
+    <mat-form-field style="width: 100%">
+      <mat-label>Commentaire</mat-label>
+      <input matInput [disabled]="mode" [(ngModel)]="commentaire">
+      <mat-icon matSuffix>swap_horizontal_circle</mat-icon>
+    </mat-form-field>
+    <div class="row">
+      <div class="form-group col-md-12">
+        <div class="input-group-prepend">
+          <table class="table" >
+            <thead>
+            <tr>
+              <th scope="col" >Task name</th>
+              <th scope="col" >Decision </th>
+              <th scope="col">Responsable</th>
+              <th scope="col" >Start Time</th>
+              <th scope="col" >End Time</th>
+              <th scope="col" >Durée</th>
+              <th scope="col" >Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let h of historicTasks;let i=index">
+              <td style="font-size: smaller;">{{h.taskName}}</td>
+              <td style="font-size: smaller">{{h.decision}}</td>
+              <td style="font-size: smaller">{{h.assignee}}</td>
+              <td style="font-size: smaller">{{h.startTime}}</td>
+              <td style="font-size: smaller">{{h.endTime}}</td>
+              <td style="font-size: smaller">{{h.duree}}</td>
+              <td style="font-size: smaller">{{h.description}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>
+
+
+<div  *ngFor="let decision of decisionTab" style="float: right;" style="width: 80%; margin: auto;">
+  <button type="button"
+          class="btn btn-primary btn-rounded w-200p mb-1 mr-1 butttons-style"
+          style="float: right;font-size: 85%;"
+          (click)="routerWF(demande.processInstanceId, demande.activityId, decision, commentaire, 'admin')">{{decision}}</button>
+</div>
+
+
+
+<ng-template #modalDiagram let-modal class="modal fade right" id="frameModalTop1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
+  <div class="modal-header" style="background-color: rgba(255,255,255,0);color: #a6727b;">
+    <h4>WorkFlow Viewer</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true" style="color : rgba(255,255,255,0)" >&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="background-color: #f5f5f5;">
+    <div class="container-fluid" style="background-color: white;">
+      <img [src]="url" style="width: 100%;height: 100%;">
+    </div>
+  </div>
+  <div class="modal-footer" style="background-color: #f5f5f5;">
+    <div class="row" style="padding-top:0.9%">
+      <div class="col-md-12">
+        <div style="float: right;">
+          <button   type="button" class="btn btn-primary btn-rounded w-200p mb-1 mr-1 butttons-style" style="float: right;font-size: 85%;" (click)="modal.dismiss('Cross click')">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

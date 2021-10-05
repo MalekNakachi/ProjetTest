@@ -1,0 +1,37 @@
+<div class="wrapper-inner" [ngClass]="{ 'vertical-menu-tooltip-place': (settings.theme.menuType == 'mini' && settings.theme.menu == 'vertical'),
+                                        'horizontal-menu-tooltip-place': (settings.theme.menuType == 'mini' && settings.theme.menu == 'horizontal') }">
+    
+    <app-header></app-header>
+
+    <div class="d-flex h-100" [ngClass]="{'flex-row': settings.theme.menu == 'vertical', 'flex-column': settings.theme.menu != 'vertical'}">
+        <app-sidebar *ngIf="settings.theme.menu == 'vertical'"></app-sidebar> 
+        <div class="main-content" [dir]="textdir">
+            <app-side-chat></app-side-chat>           
+            <app-breadcrumb></app-breadcrumb>            
+            <router-outlet></router-outlet>              
+        </div>
+    </div>   
+
+</div>
+<app-footer></app-footer>
+<app-back-top position="200"></app-back-top>
+
+<!--
+<div class="settings" [ngClass]="{'show': showSetting}">
+    <button class="btn btn-default toggle" (click)="showSetting=!showSetting"><i class="fa fa-spin fa-gear"></i></button>
+    <div class="card">
+        <div class="card-header text-center">
+            Menu settings
+        </div>      
+        <div class="card-body mt-2">
+            &lt;!&ndash;<h6>Choose menu</h6>  &ndash;&gt;
+            <div class="form-group">
+                <div *ngFor="let menu of menus; let i = index;" class="custom-control custom-radio">
+                    <input [attr.id]="'radio-'+i" type="radio" name="menus" class="custom-control-input radio-dark-gray"
+                        (change)="chooseMenu(menu)" [checked]="menu === menuOption" [value]="menu">
+                    <label [attr.for]="'radio-'+i" class="custom-control-label text-capitalize">{{menu}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->

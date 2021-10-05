@@ -1,0 +1,66 @@
+
+<div class="row">
+  <div class="col-md-12">
+    <fieldset class="panel1">
+      <h5>Journal Workflow</h5>
+    <div class="row">
+      <div class="form-group col-md-12">
+        <div class="input-group-prepend">
+          <table class="table colorTab" >
+            <thead>
+            <tr>
+              <th scope="col" >Activité</th>
+              <th scope="col" >Décision </th>
+              <th scope="col">Responsable</th>
+              <th scope="col" >Début</th>
+              <th scope="col" >Fin</th>
+              <th scope="col" >Durée</th>
+              <th scope="col" >Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let h of historicTasks;let i=index">
+              <td style="font-size: smaller;">{{h.taskName}}</td>
+              <td style="font-size: smaller">{{h.decision}}</td>
+              <td style="font-size: smaller">{{h.assignee}}</td>
+              <td style="font-size: smaller">{{h.startTime}}</td>
+              <td style="font-size: smaller">{{h.endTime}}</td>
+              <td style="font-size: smaller">{{h.duree}}</td>
+              <td style="font-size: smaller">{{h.description}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    </fieldset>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <fieldset class="panel1">
+      <h5>Journal Lecteur </h5>
+    <div class="row">
+      <div class="form-group col-md-12">
+        <div class="input-group-prepend">
+          <table class="table colorTab" >
+            <thead>
+            <tr>
+              <th scope="col" >Utilisateur</th>
+              <th scope="col" >Date de consultation  </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let h of consultjournal;let i=index">
+              <td style="font-size: smaller;">{{h.user}}</td>
+              <td style="font-size: smaller">{{h.dateconsultation}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    </fieldset>
+  </div>
+</div>

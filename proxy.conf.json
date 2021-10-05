@@ -1,0 +1,23 @@
+{
+  "/api/*":{
+    "target":"http://127.0.0.1:8091",
+    "secure":false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/alfresco/*": {
+    "target": {
+      "host": "alfrescodev.picosoft.biz",
+      "protocol": "http:",
+      "port": 80
+    },
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/login/*":{
+    "target":"http://127.0.0.1:8091",
+    "secure":false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

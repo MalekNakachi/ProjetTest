@@ -1,0 +1,33 @@
+
+
+<div class="row">
+    <div class="col-lg-3 col-md-5">
+        <div class="card border-0 box-shadow mb-4">
+            <img  class="card-img-top w-100" alt="user"
+                 src="assets/img/users/default-user.jpg"/>
+<!--            <img *ngIf="thumbnailphoto != null" class="card-img-top w-100" alt="user"-->
+<!--                 src="{{profileManager+'/api/getUserPicture?directory='+thumbnailphoto}}"/>-->
+            <div class="card-body">
+                <h4 class="card-title text-center">{{nomuser}}</h4>
+
+                <h5 class="card-title text-center" style="color: #026b75">{{profiles}}</h5>
+
+                <!--<div class="d-flex flex-row justify-content-center align-items-center w-100 mt-4">-->
+                <span >
+                <!--<img src="assets/images.jpg" height="30" width="30"  (click)="childd.configg($event)">-->
+                <img src="assets/images.jpg" height="30" width="30"  (click)="openmodaluserprofilescanner()">
+<!-- <img src="assets/images.jpg" height="30" width="30" title="Télécharger Logiciel de Numérisation " >-->
+<i class="fa fa-upload fa-2x" aria-hidden="true" title="Télécharger Logiciel de Numérisation " style="float: right;color: #3877a9; " (click)="downloadtoolkit()"></i>
+
+            </span>
+                <!--</div>-->
+
+            </div>
+        </div>
+    </div>
+<!--    <div class="col-lg-9 col-md-7">-->
+<!--        &lt;!&ndash;        <h5 (click)="childd.configg($event)">Paramétrages scanner</h5>&ndash;&gt;-->
+<!--        <app-blankFileModule #childd hidden></app-blankFileModule>-->
+
+<!--    </div>-->
+</div>

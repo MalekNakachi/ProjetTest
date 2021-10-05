@@ -1,0 +1,49 @@
+<dx-load-panel
+    #loadPanel
+    shadingColor="rgb(114 109 109 / 32%)"
+
+    [(visible)]="loadIndicatorVisible"
+    [showIndicator]="true"
+    [showPane]="true"
+    [shading]="true"
+    [closeOnOutsideClick]="false"
+>
+</dx-load-panel>
+<div class="d-flex justify-content-center align-items-center w-100 h-100 login-container">
+    <div class="col-xl-4 col-md-6 col-10">
+        <div class="card border-0 box-shadow rounded-0 card-spacial">
+            <div class="card-header d-flex justify-content-center align-items-center border-0 box-shadow spacial-itm">
+                <img class="logo-login" alt="logo" src="assets/logo-login.png">
+            </div>
+            <div class="card-body text-center pb-1">
+                <h2>Member login</h2>
+<!--                <a routerLink="/register" class="transition force-white">Don't have an account? Sign up now!</a>-->
+
+                <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="text-left mt-4">
+                    <div class="form-group">
+                        <input [formControl]="login" class="form-control validation-field" placeholder="Login" type="text">
+<!--                        <small class="text-danger" *ngIf="form.get('email').touched && form.get('email').hasError('required')">Login is required</small>-->
+                    </div>
+                    <div class="form-group">
+                        <input [formControl]="password" class="form-control validation-field" placeholder="Password" type="password">
+                        <small class="text-danger" *ngIf="form.get('password').touched && form.get('password').hasError('required')">Password obligatoire</small>
+
+                    </div>
+                    <div class="form-group d-flex justify-content-between">
+<!--                        <div class="custom-control custom-checkbox">-->
+<!--                            <input type="checkbox" class="custom-control-input" id="login-checkbox">-->
+<!--                            <label class="custom-control-label" for="login-checkbox">Keep me signed in.</label>-->
+<!--                        </div>-->
+<!--                        <a class="transition force-white pull-right" href="javascript:void(0);">Forgot password?</a>-->
+                    </div>
+<!--                    <small class="text-danger" *ngIf="infWrong">Username or Password wrong, please verify your information!</small>-->
+                    <div class="text-danger " *ngIf="currentToken=='error'" style="text-align: center!important;margin-bottom: 8px;font-weight: bolder;font-size: 15px;">Merci de vérifier votre nom d'utilisateur et mot de passe</div>
+                    <div class="form-group">
+                        <button [disabled]="!form.valid" class="btn btn-block" type="submit">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

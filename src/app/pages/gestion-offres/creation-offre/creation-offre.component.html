@@ -1,0 +1,113 @@
+<mat-card class="mat-elevation-z5" style="width: 80%; margin: auto; margin-bottom: 10px; background: url('assets/water.png'), linear-gradient(to right, #6093c16b,#2d6aa0); background-size: cover;">
+  <mat-card-title style="text-align: right;align-item: right; color: #ffffff;">
+    <div style=" display: flex; justify-content: space-between; width: 60%">
+      <div style="display: inline-block; text-align: center;">
+        <a target="_blank" style="color: white;" href="http://www.onas.nat.tn/Fr/index.php?code=3"><strong>Création Offre</strong><p style="font-family: Roboto">G.A</p></a>
+      </div>
+      <div style="display: inline-block; text-align: center;">
+        <button style="float: right; background-color: #435e6b; border-color:#435e6b;"   (click)="identifier()" *ngIf="offre.identifiant === null" type="button" name="btn" role="button" class="btn btn-primary" >
+          <i aria-hidden="true" class=" fa fa-drivers-license" title="S'identifier"> </i>
+        </button>
+        <p style="color: white;" *ngIf="offre.identifiant !== null">{{offre.identifiant}}</p>
+      </div>
+    </div>
+  </mat-card-title>
+
+</mat-card >
+
+
+<mat-card class="mat-elevation-z5" style="width: 80%; margin: auto; margin-bottom: 10px;">
+  <mat-card-content>
+    <div class="row">
+      <div class="col-md-6" style="display: flex;justify-content: center;">
+        <div class="dx-field"  style="width: 100%;">
+          <div class="dx-field-label">List des Articles</div>
+          <div class="dx-field-value">
+            <dx-tag-box
+              [items]="articles"
+              [(ngModel)]="selectedArticles"
+              [searchEnabled]="true"
+              [disabled]="mode" style="width: 80%;">
+            </dx-tag-box>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" style="display: flex;justify-content: center;">
+        <div class="dx-field"  style="width: 100%;">
+          <div class="dx-field-label">List des Fournisseurs</div>
+          <div class="dx-field-value">
+            <dx-tag-box
+              [items]="fournisseurs"
+              [(ngModel)]="selectedFournisseurs"
+              [searchEnabled]="true"
+              [disabled]="mode"  style="width: 80%;">
+            </dx-tag-box>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="mat-elevation-z5" style="width: 80%; margin: auto;margin-bottom: 10px;">
+  <mat-card-content>
+    <div class="row" style="display: flex; justify-content: space-around">
+      <div class="col-md-6">
+        <div style="display: flex; justify-content: space-around;">
+          <mat-form-field style="width: 100%">
+            <mat-label>Prix</mat-label>
+            <input matInput matNativeControl type="number" [disabled]="mode" [(ngModel)]="offre.prix" style="width: 70%;">
+            <mat-icon matSuffix>perm_identity</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div style="display: flex; justify-content: space-around;">
+          <mat-form-field style="width: 100%">
+            <mat-label>Description</mat-label>
+            <input matInput matNativeControl class="example-right-align" [disabled]="mode" [(ngModel)]="offre.description" style="width: 100%;">
+            <mat-icon matSuffix>ballot</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+<mat-card class="mat-elevation-z5" style="width: 80%; margin: auto;margin-bottom: 10px;">
+  <mat-card-content>
+    <div class="row" style="display: flex; justify-content: space-around">
+      <div class="col-md-6">
+        <div style="display: flex; justify-content: space-around;">
+          <mat-form-field style="width: 100%">
+            <mat-label>Date Offre</mat-label>
+            <input matInput matNativeControl  [matDatepicker]="dp1"  [disabled]="mode"  [(ngModel)]="offre.date" style="width: 80%;">
+            <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+            <mat-datepicker #dp1></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div style="display: flex; justify-content: space-around;">
+          <mat-form-field style="width: 100%">
+            <mat-label>Lieu Livraison</mat-label>
+            <input matInput matNativeControl class="example-right-align" [disabled]="mode" [(ngModel)]="offre.lieuDeLivraison" style="width: 100%;">
+            <mat-icon matSuffix>ballot</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<div style="float: right;" style="width: 80%; margin: auto;" [hidden]="mode" >
+  <button type="button" [disabled]="offre.identifiant === null"
+          class="btn btn-primary btn-rounded w-200p mb-1 mr-1 butttons-style"
+          style="float: right;font-size: 85%;"
+          (click)="createOffre(offre)">Créer Offre</button>
+</div>
+
+
+
+

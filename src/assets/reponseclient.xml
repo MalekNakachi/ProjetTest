@@ -1,0 +1,45 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <ns2:WSBTLGEDFICHECLIENTResponse xmlns:ns2="T24WebServicesImpl">
+            <Status>
+                <successIndicator>Success</successIndicator>
+            </Status>
+            <BTLENQGEDCUSTOMERType>
+                <gBTLENQGEDCUSTOMERDetailType>
+                    <mBTLENQGEDCUSTOMERDetailType>
+                        <NOMPRENOM>SANCELLA TUNISIE</NOMPRENOM>
+                        <ADRESSE>52 RUE 8601 ZI CHARGUIA</ADRESSE>
+                        <CODEPOSTAL>1002</CODEPOSTAL>
+                        <NATIONALITE>TN</NATIONALITE>
+                        <DATENAISSANCE>20140327</DATENAISSANCE>
+                        <TYPECLIENT>5000</TYPECLIENT>
+                        <NATURECLIENT>PM</NATURECLIENT>
+                        <FORMEJUR>4008</FORMEJUR>
+                        <SITJUR>2</SITJUR>
+                        <INDUSTRIE>Extraction de produits energetiques</INDUSTRIE>
+                        <AGENCE>BTL Centre Urbain Nord</AGENCE>
+                        <TELEPHONE>0</TELEPHONE>
+                        <PORTABLE>98323105</PORTABLE>
+                        <EMAIL>hamdi.labidi@sancella.com.tn</EMAIL>
+                        <CUSREL>10114</CUSREL>
+                        <LEGALIDNAME>Registre de Commerce</LEGALIDNAME>
+                        <LEGALID>B14441997</LEGALID>
+                        <LEGALISSUEDATE>20001201</LEGALISSUEDATE>
+                    </mBTLENQGEDCUSTOMERDetailType>
+                    <mBTLENQGEDCUSTOMERDetailType>
+                        <IDCUS>21573</IDCUS>
+                        <CUSREL>10456</CUSREL>
+                        <LEGALIDNAME>Identifiant National</LEGALIDNAME>
+                        <LEGALID>02949006</LEGALID>
+                        <LEGALISSUEDATE>20140327</LEGALISSUEDATE>
+                    </mBTLENQGEDCUSTOMERDetailType>
+                    <mBTLENQGEDCUSTOMERDetailType>
+                        <LEGALIDNAME>Identifiant fiscal</LEGALIDNAME>
+                        <LEGALID>0496781SAM000</LEGALID>
+                        <LEGALISSUEDATE>20140327</LEGALISSUEDATE>
+                    </mBTLENQGEDCUSTOMERDetailType>
+                </gBTLENQGEDCUSTOMERDetailType>
+            </BTLENQGEDCUSTOMERType>
+        </ns2:WSBTLGEDFICHECLIENTResponse>
+    </S:Body>
+</S:Envelope>

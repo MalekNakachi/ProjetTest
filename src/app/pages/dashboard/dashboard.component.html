@@ -1,0 +1,146 @@
+<div class="col-12 mb-3" >
+    <dx-select-box
+            [dataSource]="listProcessus"
+            [(selectedItem)]="selectedPocessus"
+            [value]="selectedItem"
+            (onSelectionChanged)="selectedChangedSelectBoxProcessus($event)"
+            showClearButton="true"
+            style="width:20%;">
+    </dx-select-box>
+</div>
+<div class="col-12 mb-3" >
+    <div widget class="card border-0 box-shadow">
+        <div class="card-header transparent border-0 text-muted">
+            <div class="widget-controls">
+            </div>
+        </div>
+        <div class="card-body widget-body">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <ngx-charts-pie-grid
+                            [scheme]="colorScheme1"
+                            [view]="[400,300]"
+                            [results]="processes"
+                            [designatedTotal]="100"
+                            label="Nombre"
+                            (select)="onSelect($event)">
+                    </ngx-charts-pie-grid>
+                </div>
+
+                <div class="col-md-4">
+                    <ngx-charts-pie-grid
+                            [scheme]="colorScheme2"
+                            [results]="processesEnCours"
+                            [designatedTotal]="100"
+                            label="Nombre"
+                            (select)="onSelect($event)">
+                    </ngx-charts-pie-grid>
+                </div>
+
+                <div class="col-md-4">
+                    <ngx-charts-pie-grid
+                            [scheme]="colorScheme3"
+                            [results]="processesTraite"
+                            [designatedTotal]="100"
+                            label="Nombre"
+                            (select)="onSelect($event)">
+                    </ngx-charts-pie-grid>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="col-12 mb-3" style="margin-top: 5%;">
+    <div widget class="card border-0 box-shadow">
+        <div class="card-header transparent border-0 text-muted">
+            <div class="widget-controls">
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <div class="row">
+                <div class="col-md-7">
+                    <div widget class="card border-0">
+                        <div class="card-header transparent border-0 text-muted">
+                            <h5 class="mb-0">Processus Traité</h5>
+                            <div class="widget-controls">
+                            </div>
+                        </div>
+                        <div class="card-body pt-0 pl-2 pr-2 pb-2 widget-body">
+                            <div class="col-md-12" style="background-color: white;">
+                                <dx-select-box
+                                        [dataSource]="['Par Annee','Par Mois']"
+                                        [(selectedItem)]="selectedItem"
+                                        [value]="selectedItem"
+                                        (onSelectionChanged)="selectedChangedSelectBox($event)"
+                                        showClearButton="true"
+                                        style="width:20%;">
+                                </dx-select-box>
+                                <dx-chart id="chart"
+                                          [dataSource]="datasource"
+                                          title="{{chartTitle}}"
+                                          palette="Harmony Light"
+                                          [valueAxis]="[{
+                                                name: 'frequency',
+                                                position: 'left',
+                                                tickInterval: 10
+                                              }, {
+                                                name: 'percentage',
+                                                position: 'right',
+                                                showZero: true,
+                                                label: {
+                                                    customizeText: customizeLabelText
+                                                },
+                                                constantLines: [{
+                                                    value: 80,
+                                                    color: '#fc3535',
+                                                    dashStyle: 'dash',
+                                                    width: 2,
+                                                    label: { visible: false }
+                                                }],
+                                                tickInterval: 20,
+                                                valueMarginsEnabled: false
+                                              }]">
+                                    <dxo-argument-axis>
+                                        <dxo-label overlappingBehavior="stagger"></dxo-label>
+                                    </dxo-argument-axis>
+                                    <dxo-tooltip
+                                            [enabled]="true"
+                                            [shared]="true"
+                                            [customizeTooltip]="customizeTooltip">
+                                    </dxo-tooltip>
+                                    <dxo-common-series-settings
+                                            argumentField="Actif">
+                                    </dxo-common-series-settings>
+                                    <dxi-series
+                                            type="bar"
+                                            valueField="count"
+                                            axis="frequency"
+                                            name="Courrier frequency"
+                                            color="#fac29a">
+                                    </dxi-series>
+                                    <dxi-series
+                                            type="spline"
+                                            valueField="cumulativePercent"
+                                            axis="percentage"
+                                            name="Cumulative percentage"
+                                            color="#6b71c3">
+                                    </dxi-series>
+                                    <dxo-legend
+                                            verticalAlignment="top"
+                                            horizontalAlignment="center">
+                                    </dxo-legend>
+                                </dx-chart>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <app-disk-space [courrierDataSource] = "discprocesses" ></app-disk-space>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

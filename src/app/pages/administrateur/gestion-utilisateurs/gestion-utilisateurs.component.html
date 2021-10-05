@@ -1,0 +1,338 @@
+<div class="row mb-1" style="margin-left:5px ; margin-right: 5px">
+  <div class="col">
+    <div class="input-group mb-3 box-shadow">
+      <div class="input-group-prepend">
+        <span class="input-group-text border-top-0 border-left-0 border-bottom-0"><i class="fa fa-search"></i></span>
+      </div>
+      <input type="text" [(ngModel)]="searchText" placeholder="Choisir utilisateur ..." class="form-control border-0">
+      <div class="input-group-append">
+        <span (click)="openModal(modalContent, null)" class="input-group-text border-top-0 border-right-0 border-bottom-0"><i class="fa fa-user-plus"></i></span>
+        <span (click)="toggle('grid')" class="input-group-text border-top-0 border-right-0 border-bottom-0"><i class="fa fa-th"></i></span>
+        <span (click)="toggle('list')" class="input-group-text border-top-0 border-right-0 border-bottom-0"><i class="fa fa-list"></i></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="type=='grid'" class="row" style="margin-left:5px; margin-right: 5px">
+  <div *ngFor="let user of users | UserSearchPipe : searchText | paginate: { itemsPerPage: 12, currentPage: p }; let i = index;" class="col-xl-4 col-lg-6 mb-4">
+    <div class="flip">
+      <div class="content">
+        <div class="front">
+          <div class="card border-0 box-shadow rounded-0">
+            <div class="card-header border-0 rounded-0 text-muted" style="height: 30px;">
+              <div class="widget-controls align-content-end" style="width: 100%;height: 30px;">
+                <a (click)="openMenuAssign($event)" href="javascript:void(0);" class="transition"  style="float: right;margin-right: 2%;"><i class="fa fa-bars"></i></a>
+                <a (click)="openModalEdit(modalContentEdit, user)"  href="javascript:void(0);" class="transition" style="float: left;margin-left: 2%;"><i class="fa fa-pencil"></i></a>
+                <a (click)="deleteUser(user)" href="javascript:void(0);" class="transition" style="float: left;margin-left: 5%;"><i class="fa fa-trash"></i></a>
+              </div>
+            </div>
+            <div class="card-body pt-3">
+
+              <div class="media">
+                <div class="d-flex flex-column justify-content-center">
+                  <img src="assets/img/users/default-user.jpg" width="130px" height="95px">
+
+                </div>
+                <div class="media-body ml-3">
+                  <div class="row">
+                    <div class="col-4 text-gray text-right pr-0 font-italic text-truncate" style="color: #fdfdfd;">Login:</div>
+                    <div class="col-8 pl-2 text-truncate">{{user.login}}</div>
+                    <br>
+
+                    <div class="col-4 text-gray text-right pr-0 font-italic text-truncate">Email:</div>
+                    <div class="col-8 pl-2 text-truncate">{{user.email}}</div>
+
+
+                    <div class="col-4 text-gray text-right pr-0 font-italic text-truncate">Roles:</div>
+                    <div class="col-8 pl-2 text-truncate">{{user.role.name}}</div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="back">
+          <div class="card border-0 box-shadow rounded-0">
+            <div class="card-header border-0 rounded-0 text-muted" style="height: 30px;">
+
+              <div class="widget-controls">
+                <a><h5 class="mb-0" style="float: left;">
+                  {{user.name}}
+                </h5></a>
+                <a (click)="closeMenuAssign($event)" href="javascript:void(0);" class="transition" style="float: right;"><i class="fa fa-times"></i></a>
+              </div>
+            </div>
+            <div class="card-body pt-3">
+
+              <div col-4 text-gray text-right pr-0 font-italic text-truncate style="color: blue">Description : {{user.description}}</div>
+              <div col-4 text-gray text-right pr-0 font-italic text-truncate style="color: #b1b1b1">Date Creation :{{user.datecreate }}</div>
+              <div col-4 text-gray text-right pr-0 font-italic text-truncate style="color: #b1b1b1">Date Modifcation : {{user.dateupdate}}</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="type=='list'" class="row">
+  <div class="col-12">
+    <div class="table-responsive bg-white box-shadow">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <!--<th></th>-->
+          <th>Login</th>
+          <th>Email</th>
+          <th>Description</th>
+          <th>Date Création</th>
+          <th>Date Modification</th>
+          <th>Roles</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of users | UserSearchPipe : searchText | paginate: { itemsPerPage: 12, currentPage: p }">
+          <!--<td class="align-middle">-->
+          <!--&lt;!&ndash;<img *ngIf="user.profile.image" class="rounded-circle" [src]="user.profile.image" width="40">&ndash;&gt;-->
+          <!--<img *ngIf="!user.profile.image"  src="assets/img/users/bc.png" width="40" disabled>-->
+          <!--</td>-->
+          <td class="align-middle text-truncate">{{user.login}} </td>
+          <td class="align-middle text-truncate">{{user.email}}</td>
+          <!--<td class="align-middle text-truncate"><i *ngIf='(user.contacts.phone)!=="null"'>{{user.contacts.phone}}</i></td>-->
+          <!--<td class="align-middle text-truncate">{{user.contacts.phone}}</td>-->
+          <td class="align-middle text-truncate">{{user.description}}</td>
+          <td class="align-middle text-truncate">{{user.datecreate}}</td>
+          <td class="align-middle text-truncate">{{user.dateupdate}}</td>
+
+          <td class="align-middle text-truncate">{{user.role.name}}</td>
+
+          <td class="align-middle">
+            <div class="btn-group" role="group">
+              <button class="btn btn-secondary btn-sm" (click)="openModalEdit(modalContentEdit, user)" style="    color: #fff;
+    background-color: #4d71d1;
+    border-color: #4d71d1;"><i class="fa fa-pencil"></i></button>
+              <button class="btn btn-secondary btn-sm" (click)="deleteUser(user)" style="    color: #fff;
+    background-color: #4d71d1;
+    border-color: #4d71d1;margin-left: 5%;"><i class="fa fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="bg-white text-center">
+      <pagination-controls autoHide="true" (pageChange)="p = $event" maxSize="6"></pagination-controls>
+    </div>
+  </div>
+</div>
+
+<ng-template #modalContent>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-12 vertical-tabs">
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="row px-3" style="width: 104%;">
+          <ul class="nav flex-column left col-3 border-0 rounded-0 mr-0 bg-light">
+            <img  src="assets/img/users/default-user.jpg" style=" width: 76%; margin-left: 12%;    height: 26%;  margin-top: 50%;">
+            <li class="nav-item bg-light">
+              <a class="nav-link active" href="#basic" data-toggle="tab" hidden>Basiques</a>
+            </li>
+
+
+            <li class="nav-item bg-light">
+              <a class="nav-link" href="#personal" data-toggle="tab">Information Personelles</a>
+              <br>
+              <!--<div class="custom-control custom-checkbox" style="margin-bottom: 120%">-->
+              <!--&lt;!&ndash;<input id="checkstatus"  type="checkbox" [value]="Active" (change)="changeStatus(user)">&ndash;&gt;-->
+              <!--<label id="sts">Status</label> <label class="labelred"><b> *</b> </label>-->
+              <!--<br>-->
+              <!--&lt;!&ndash;<select name="statusUser" id="statusUser" (change)="changeStatus(user)" selected="used" style="float: left;font-size: smaller;height: calc(1em + 0.9rem + 2px); width: 90px;">&ndash;&gt;-->
+              <!--&lt;!&ndash;<option value="" disabled >Status</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;<option *ngFor="let o of listStatus">&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;{{o}}&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;</option>&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;<option value="Actif" [selected]="user['settings']['isActive']==true">Actif</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;<option value="Inactif" [selected]="user['settings']['isActive']==false">Inactif</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;</select>&ndash;&gt;-->
+              <!--</div>-->
+
+
+              <br>
+              <!---->
+
+
+
+            </li>
+
+
+            <li class="nav-item bg-light">
+              <a class="nav-link" href="#work" data-toggle="tab" hidden>Profile</a>
+            </li>
+            <li class="nav-item bg-light">
+              <a class="nav-link" href="#contacts" data-toggle="tab" hidden>Contacts</a>
+            </li>
+
+            <!--<li class="nav-item bg-light">-->
+            <!--<a class="nav-link" href="#settings" data-toggle="tab">Settings</a>-->
+            <!--</li>                 -->
+          </ul>
+          <div class="tab-content col-9 border-0">
+            <!--<div class="tab-pane active" id="basic">-->
+            <div class="form-group">
+              <label class="text-gray">Login </label> <label class="labelred"><b> *</b> </label>
+              <input formControlName="login"  pattern="[^'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØŒŠþÙÚÛÜÝŸàáâãäåæçèéêëìíîïðñòóôõöøœšÞùúûüýÿ]{0,}" class="form-control validation-field" type="text">
+              <small class="text-danger" *ngIf="form.controls.login.touched && form.controls.login.errors?.required">Le nom d'utilisateur est requis</small>
+              <small class="text-danger" *ngIf="form.controls.login.touched && form.controls.login.errors?.minlength">Le nom d'utilisateur invalide, minimum 5 caractères et ne doit pas contenir des caractères spéciaux </small>
+              <small class="text-danger" *ngIf="form.controls.login.touched && form.controls.login.errors && !form.controls.login.errors?.required && !form.controls.login.errors?.minlength">Le nom d'utilisateur invalide, minimum 5 caractères et ne doit pas contenir des caractères spéciaux </small>
+
+            </div>
+
+            <div class="form-group">
+              <label class="text-gray">Mot de passe</label><label class="labelred"><b> *</b> </label>
+              <input formControlName="password" class="form-control validation-field" type="password">
+              <small class="text-danger" *ngIf="form.controls.password.touched && form.controls.password.errors?.required">Le mot de passe est requis</small>
+              <small class="text-danger" *ngIf="form.controls.password.touched && form.controls.password.errors?.minlength">Le mot de passe n'est pas assez long, minimum 6 caractères</small>
+            </div>
+
+            <div class="form-group">
+              <label class="text-gray">Email </label> <label class="labelred"><b> *</b> </label>
+              <input formControlName="email"  pattern="[^'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØŒŠþÙÚÛÜÝŸàáâãäåæçèéêëìíîïðñòóôõöøœšÞùúûüýÿ]{0,}" class="form-control validation-field" type="text">
+              <small class="text-danger" *ngIf="form.controls.email.touched && form.controls.email.errors?.required">Email est requis</small>
+              <small class="text-danger" *ngIf="form.controls.email.touched && form.controls.email.errors?.minlength">Email invalide, minimum 5 caractères et ne doit pas contenir des caractères spéciaux </small>
+              <small class="text-danger" *ngIf="form.controls.email.touched && form.controls.email.errors && !form.controls.email.errors?.required && !form.controls.email.errors?.minlength">Email invalide, minimum 5 caractères et ne doit pas contenir des caractères spéciaux </small>
+
+            </div>
+
+
+            <div class="form-group">
+              <label class="text-gray">Description </label> <label class="labelred"><b> *</b> </label>
+              <input formControlName="description"  pattern="[^'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØŒŠþÙÚÛÜÝŸàáâãäåæçèéêëìíîïðñòóôõöøœšÞùúûüýÿ]{0,}" class="form-control validation-field" type="text">
+              <small class="text-danger" *ngIf="form.controls.description.touched && form.controls.description.errors?.required">Description d'utilisateur est requis</small>
+              <small class="text-danger" *ngIf="form.controls.description.touched && form.controls.description.errors?.minlength">Description invalide, minimum 5 caractères et ne doit pas contenir des caractères spéciaux </small>
+              <small class="text-danger" *ngIf="form.controls.description.touched && form.controls.description.errors && !form.controls.description.errors?.required && !form.controls.description.errors?.minlength">Description invalide, minimum 5 caractères et ne doit pas contenir des caractères spéciaux </small>
+
+            </div>
+            <div class="form-group">
+              <label class="text-gray">Role </label> <label class="labelred"><b> *</b> </label>
+              <select formControlName="role" class="form-control validation-field" >
+                <option  *ngFor="let role of roles" [value]="role">{{role.name}}</option>
+              </select>
+            </div>
+            <button [disabled]="!form.valid" id="btn-succes" class="btn btn-success mr-1" type="submit" style="margin-left: 60%;"><span >Ajouter</span></button>
+            <button type="button" id="btn-danger" class="btn btn-danger" (click)="closeModal()">Retourner</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+
+<ng-template #modalContentEdit>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-12 vertical-tabs">
+        <form [formGroup]="form" (ngSubmit)="onSubmitEdit(form.value)" class="row px-3" style="width: 104%;">
+          <ul class="nav flex-column left col-3 border-0 rounded-0 mr-0 bg-light">
+            <img  src="assets/img/users/default-user.jpg" style=" width: 76%; margin-left: 12%;    height: 26%;  margin-top: 50%;">
+            <li class="nav-item bg-light">
+              <a class="nav-link active" href="#basic" data-toggle="tab" hidden>Basiques</a>
+            </li>
+
+
+            <li class="nav-item bg-light">
+              <a class="nav-link" href="#personal" data-toggle="tab">Information Personelles</a>
+              <br>
+              <!--<div class="custom-control custom-checkbox" style="margin-bottom: 120%">-->
+              <!--&lt;!&ndash;<input id="checkstatus"  type="checkbox" [value]="Active" (change)="changeStatus(user)">&ndash;&gt;-->
+              <!--<label id="sts">Status</label> <label class="labelred"><b> *</b> </label>-->
+              <!--<br>-->
+              <!--&lt;!&ndash;<select name="statusUser" id="statusUser" (change)="changeStatus(user)" selected="used" style="float: left;font-size: smaller;height: calc(1em + 0.9rem + 2px); width: 90px;">&ndash;&gt;-->
+              <!--&lt;!&ndash;<option value="" disabled >Status</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;<option *ngFor="let o of listStatus">&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;{{o}}&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;</option>&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;<option value="Actif" [selected]="user['settings']['isActive']==true">Actif</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;<option value="Inactif" [selected]="user['settings']['isActive']==false">Inactif</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;</select>&ndash;&gt;-->
+              <!--</div>-->
+
+
+              <br>
+              <!---->
+
+
+
+            </li>
+
+
+            <li class="nav-item bg-light">
+              <a class="nav-link" href="#work" data-toggle="tab" hidden>Profile</a>
+            </li>
+            <li class="nav-item bg-light">
+              <a class="nav-link" href="#contacts" data-toggle="tab" hidden>Contacts</a>
+            </li>
+
+            <!--<li class="nav-item bg-light">-->
+            <!--<a class="nav-link" href="#settings" data-toggle="tab">Settings</a>-->
+            <!--</li>                 -->
+          </ul>
+          <div class="tab-content col-9 border-0">
+            <!--<div class="tab-pane active" id="basic">-->
+            <div class="form-group">
+              <label class="text-gray">Login </label> <label class="labelred"><b> *</b> </label>
+              <input formControlName="login"  pattern="[^'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØŒŠþÙÚÛÜÝŸàáâãäåæçèéêëìíîïðñòóôõöøœšÞùúûüýÿ]{0,}" class="form-control validation-field" type="text">
+              <small class="text-danger" *ngIf="form.controls.login.touched && form.controls.login.errors?.required">Le nom d'utilisateur est requis</small>
+              <small class="text-danger" *ngIf="form.controls.login.touched && form.controls.login.errors?.minlength">Le nom d'utilisateur invalide, minimum 5 caractères et ne doit pas contenir des caractères spéciaux </small>
+              <small class="text-danger" *ngIf="form.controls.login.touched && form.controls.login.errors && !form.controls.login.errors?.required && !form.controls.login.errors?.minlength">Le nom d'utilisateur invalide, minimum 5 caractères et ne doit pas contenir des caractères spéciaux </small>
+
+            </div>
+
+            <div class="form-group">
+              <label class="text-gray">Mot de passe</label><label class="labelred"><b> *</b> </label>
+              <input formControlName="password" class="form-control validation-field" type="password">
+              <small class="text-danger" *ngIf="form.controls.password.touched && form.controls.password.errors?.required">Le mot de passe est requis</small>
+              <small class="text-danger" *ngIf="form.controls.password.touched && form.controls.password.errors?.minlength">Le mot de passe n'est pas assez long, minimum 6 caractères</small>
+            </div>
+
+            <div class="form-group">
+              <label class="text-gray">Email </label> <label class="labelred"><b> *</b> </label>
+              <input formControlName="email"  pattern="[^'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØŒŠþÙÚÛÜÝŸàáâãäåæçèéêëìíîïðñòóôõöøœšÞùúûüýÿ]{0,}" class="form-control validation-field" type="text">
+              <small class="text-danger" *ngIf="form.controls.email.touched && form.controls.email.errors?.required">Email est requis</small>
+              <small class="text-danger" *ngIf="form.controls.email.touched && form.controls.email.errors?.minlength">Email invalide, minimum 5 caractères et ne doit pas contenir des caractères spéciaux </small>
+              <small class="text-danger" *ngIf="form.controls.email.touched && form.controls.email.errors && !form.controls.email.errors?.required && !form.controls.email.errors?.minlength">Email invalide, minimum 5 caractères et ne doit pas contenir des caractères spéciaux </small>
+
+            </div>
+
+
+            <div class="form-group">
+              <label class="text-gray">Description </label> <label class="labelred"><b> *</b> </label>
+              <input formControlName="description"  pattern="[^'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØŒŠþÙÚÛÜÝŸàáâãäåæçèéêëìíîïðñòóôõöøœšÞùúûüýÿ]{0,}" class="form-control validation-field" type="text">
+              <small class="text-danger" *ngIf="form.controls.description.touched && form.controls.description.errors?.required">Description d'utilisateur est requis</small>
+              <small class="text-danger" *ngIf="form.controls.description.touched && form.controls.description.errors?.minlength">Description invalide, minimum 5 caractères et ne doit pas contenir des caractères spéciaux </small>
+              <small class="text-danger" *ngIf="form.controls.description.touched && form.controls.description.errors && !form.controls.description.errors?.required && !form.controls.description.errors?.minlength">Description invalide, minimum 5 caractères et ne doit pas contenir des caractères spéciaux </small>
+
+            </div>
+            <div class="form-group">
+              <label class="text-gray">Role </label> <label class="labelred"><b> *</b> </label>
+              <select formControlName="role" class="form-control validation-field">
+                <option  *ngFor="let role of roles" [value]="role.id">{{role.name}}</option>
+              </select>
+            </div>
+            <button [disabled]="!form.valid" id="btn-succes1" class="btn btn-success mr-1" type="submit" style="margin-left: 60%;"><span >Modifier</span></button>
+            <button type="button" id="btn-danger1" class="btn btn-danger" (click)="closeModal()">Retourner</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>

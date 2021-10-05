@@ -1,0 +1,31 @@
+<div widget class="card border-0">
+    <div class="card-header transparent border-0 text-muted">
+        <h5 class="mb-0">Processus Traité</h5>
+        <div class="widget-controls">
+        </div>        
+    </div>
+    <div class="card-body pt-0 pl-2 pr-2 pb-2 widget-body">
+        <div class="text-center mb-2 fs-13">
+            <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" class="custom-control-input checkbox-dark-gray" id="checkboxExplodeSlices" [checked]="explodeSlices" (change)="explodeSlices = !explodeSlices">
+                <label class="custom-control-label" for="checkboxExplodeSlices">tranches Décomposé</label>
+            </div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" class="custom-control-input checkbox-dark-gray" id="checkboxShowLabels" [checked]="showLabels" (change)="showLabels = !showLabels">
+                <label class="custom-control-label" for="checkboxShowLabels">étiquettes Affiché</label>
+            </div>
+        </div>
+        <div class="w-100 h-300p">
+            <ngx-charts-pie-chart
+                [scheme]="colorScheme"
+                [results]="courrierDataSource"
+                [legend]="showLegend"
+                [explodeSlices]="explodeSlices"
+                [labels]="showLabels"
+                [doughnut]="doughnut"
+                [gradient]="gradient"
+                (select)="onSelect($event)">
+            </ngx-charts-pie-chart>   
+        </div>
+    </div>
+</div>

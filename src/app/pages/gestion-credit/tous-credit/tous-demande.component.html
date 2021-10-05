@@ -1,0 +1,102 @@
+
+
+<dx-data-grid #grid id="gridContainer" [dataSource]="demandes" keyExpr="codeclient"
+              [allowColumnReordering]="true"
+              [allowColumnResizing]="true"
+              (onRowInserting)="onAdd($event)"
+              [showBorders]="true"
+              [rowAlternationEnabled]="true"
+              [remoteOperations]="true"
+              (onSelectionChanged)="selectedChanged($event,grid.instance.getSelectedRowsData()[0])"
+              [showColumnLines]="false"
+              [showRowLines]="false"
+>
+
+  <!--    <dxo-scrolling mode="virtual" ></dxo-scrolling>-->
+  <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+  <dxo-load-panel [enabled]="true"></dxo-load-panel>
+  <!--   <dxo-group-panel [visible]="true"></dxo-group-panel>-->
+  <dxo-selection mode="single"></dxo-selection>
+  <dxi-column dataField="id" caption="ID" [filterOperations]="['contains']"[visible]="false"></dxi-column>
+  <dxi-column dataField="identifiant" caption="Identifiant" [filterOperations]="['contains']"[visible]="true" cssClass="pointer-column" cellTemplate="linkcellTemplate"></dxi-column>
+  <dxi-column dataField="date" caption="Date Demande"  [filterOperations]="['contains']"></dxi-column>
+  <dxi-column dataField="listedesproduits" caption="Produits" [filterOperations]="['contains']"></dxi-column>
+  <dxi-column dataField="quantite" caption="Qte" [filterOperations]="['contains']"></dxi-column>
+  <dxi-column dataField="quantite_commande" caption="Qte Comandé"[filterOperations]="['contains']"></dxi-column>
+  <dxi-column dataField="description" caption="Description"[filterOperations]="['contains']"></dxi-column>
+
+
+  <dxi-column dataField="email" caption="E-mail"   [filterOperations]="['contains']"></dxi-column>
+  <dxi-column dataField="serviceDep" caption="Departement"  [filterOperations]="['contains']"></dxi-column>
+  <dxi-column dataField="nomDemandeur" caption="Demandeur" dataType="number" [filterOperations]="['contains']"></dxi-column>
+  <dxi-column dataField="tel" caption="tel" dataType="N°Tel" [filterOperations]="['contains']"></dxi-column>
+  <dxi-column dataField="status" caption="status"  [filterOperations]="['contains']"></dxi-column>
+
+  <dxo-paging [pageSize]="25"></dxo-paging>
+  <dxo-pager [showPageSizeSelector]="true" [visible]="true" [allowedPageSizes]="[25, 50, 100,150]"[showInfo]="true"></dxo-pager>
+  <dxo-sorting mode="multiple"></dxo-sorting>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxo-header-filter [visible]="true"></dxo-header-filter>
+  <dxo-search-panel [visible]="true" [width]="240" placeholder="Rechercher..."></dxo-search-panel>
+  <dxo-group-panel [visible]="false"></dxo-group-panel>
+  <dxo-grouping #expand [autoExpandAll]="false"></dxo-grouping>
+
+
+
+  <!--<div *dxTemplate="let data of 'otherTemplate'">-->
+    <!--<div class="dx-field">-->
+
+      <!--<div class="dx-field-value"><a>-->
+        <!--<i *ngIf="data.data.activityid ===null"  class="fa fa fa-times fa-lg"  style="color: red ; margin-left: 4%;"   aria-hidden="true"></i>-->
+      <!--</a></div>-->
+
+      <!--<div class="dx-field-value"><a>-->
+        <!--<i *ngIf="data.data.activityid !==null" class="fa fa fa-check fa-lg "  style="color: #00a09d; margin-left: 4%;"  aria-hidden="true"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+
+    <!--</div>-->
+  <!--</div>-->
+
+
+  <div *dxTemplate="let data of 'linkcellTemplate'; let i of index">
+    <a   href="javascript: void(0)"><i (click)="openForm(data.data)" class="la la-trash">{{data.data.identifiant}}</i></a>
+  </div>
+</dx-data-grid>
+
+
+
+<div >
+  <span>
+      <dx-speed-dial-action
+        icon="add"
+        label="Add row"
+        (onClick)="addRow()">
+      </dx-speed-dial-action>
+  </span>
+</div>
+<div *ngIf="selectedRowIndex !== -1 ">
+
+  <span *ngIf="mode === false">
+
+      <dx-speed-dial-action
+        icon="edit"
+        hint="Modifier Dossier"
+        (onClick)="onEdit(grid.instance.getSelectedRowsData()[0])"
+        >
+      </dx-speed-dial-action>
+
+  </span>
+
+  <span *ngIf="mode === true">
+     <dx-speed-dial-action
+       icon="fa fa-eye"
+       hint="Modifier Dossier"
+       (onClick)="onShowDetails(grid.instance.getSelectedRowsData()[0])"
+       >
+     </dx-speed-dial-action>
+
+  </span>
+</div>
+
+

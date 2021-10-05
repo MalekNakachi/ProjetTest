@@ -1,0 +1,27 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <ns2:WSBTLGEDACCOUNTResponse xmlns:ns2="T24WebServicesImpl">
+            <Status>
+                <successIndicator>Success</successIndicator>
+            </Status>
+            <BTLENQACCOUNTGEDType>
+                <gBTLENQACCOUNTGEDDetailType>
+                    <mBTLENQACCOUNTGEDDetailType>
+                        <CATEGORY>1000</CATEGORY>
+                        <LIBCATEGORY>COMPTE COURANT EN TND</LIBCATEGORY>
+                        <CODEAGENCE>16</CODEAGENCE>
+                        <DEVISE>TND</DEVISE>
+                        <RIB>26001000002511077963</RIB>
+                        <CODECLIENT>21573</CODECLIENT>
+                        <REFSIGNATURE>202003138787038325.jpg</REFSIGNATURE>
+                        <SIGNATAIRE>10114</SIGNATAIRE>
+                    </mBTLENQACCOUNTGEDDetailType>
+                    <mBTLENQACCOUNTGEDDetailType>
+                        <NUMCOMPTE>8900005898</NUMCOMPTE>
+                        <SIGNATAIRE>10456</SIGNATAIRE>
+                    </mBTLENQACCOUNTGEDDetailType>
+                </gBTLENQACCOUNTGEDDetailType>
+            </BTLENQACCOUNTGEDType>
+        </ns2:WSBTLGEDACCOUNTResponse>
+    </S:Body>
+</S:Envelope>

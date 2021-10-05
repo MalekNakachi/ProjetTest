@@ -1,0 +1,447 @@
+<dx-load-panel
+    #loadPanel
+    shadingColor="rgb(114 109 109 / 32%)"
+
+    [(visible)]="loadIndicatorVisible"
+    [showIndicator]="true"
+    [showPane]="true"
+    [shading]="true"
+    [closeOnOutsideClick]="false"
+>
+</dx-load-panel>
+
+
+<dx-data-grid
+        heigh="100%"
+        id="gridList"
+
+
+        [dataSource]="dataSourcePj"
+        [columnAutoWidth]="false"
+        [showRowLines]="true"
+        [hoverStateEnabled]="true"
+        [allowColumnResizing]="true"
+        [showBorders]="false"
+        [(selectedRowKeys)]="selectedRows"
+        (onToolbarPreparing)="onToolbarPreparing($event)"
+        [selectionFilter]="['id']">
+    <!--<dxo-selection-->
+    <!--[deferred]="true"-->
+    <!--mode="multiple"-->
+    <!--&gt;</dxo-selection>-->
+
+
+
+    <dxi-column caption="Fournies" cellTemplate="cemplateselection" [width]="70"></dxi-column>
+    <dxi-column [allowFiltering]="false" caption="Validation"
+                [allowSorting]="false" cellTemplate="templatevalidation" ></dxi-column>
+
+
+    <div *dxTemplate="let data of 'templatevalidation'">
+        <dx-check-box   (onValueChanged)="addcheckboxvaluevalidation($event,data.data)" [(value)]="data.data.valider" [hidden]="data.data.activite==null"
+                        [disabled]="((data.data.activite==='Vérification')&& (data.data.modedocument===false)) || ((data.data.activite==='Validation')&& (data.data.modedocument===false)) ||  ((data.data.activite=='Rattacher les PJs')|| (data.data.activite=='Mettre à Jour') || (data.data.activite=='dossiers rejetés')) "
+
+
+        >
+            ></dx-check-box>
+    </div>
+
+    <div  *dxTemplate="let datas of 'cemplateselection'">
+
+        <!--        [value]="checkBoxValuee(datas.data)"-->
+
+
+        <!--<dx-check-box [value]="true"></dx-check-box>-->
+        <dx-check-box
+                (onValueChanged)="addcheckboxvalue($event,datas.data)"
+                [(value)]="datas.data.cocher"
+
+
+                [disabled]="((datas.data.activite==='Rattacher les PJs')&& (datas.data.modedocument===false)) || ((datas.data.activite==='Mettre à Jour')&& (datas.data.modedocument===false))|| ((datas.data.activite!=='Rattacher les PJs')&& (datas.data.activite!==null)) && (datas.data.activite!=='Mettre à Jour') || ((datas.data.activite ===null) && datas.data.modedocument===false)"
+
+        >
+        </dx-check-box>
+<!--        {{()&&(datas.data.activite!='Rattacher les PJs' && datas.data.activite!=null)  }}-->
+    </div>
+
+    <dxi-column dataField="name" caption="Nom" height="50"></dxi-column>
+
+    <dxi-column   [width]="60"   cellTemplate="otherTemplateimportant"  ></dxi-column>
+    <dxi-column   [width]="110"  caption="Pièce à fournir"  cellTemplate="otherTemplatepieceafournir"></dxi-column>
+
+    <div *dxTemplate="let data of 'otherTemplateimportant'">
+        <div class="dx-field">
+
+            <a>
+                <i *ngIf="data.data.obligatoire"><img src="assets/exclamation.png" style="margin-right: 16%; width: 6px;  height: 21px;margin-left: 7%;"/></i>
+            </a>
+        </div>
+    </div>
+    <div *dxTemplate="let data of 'otherTemplatepieceafournir'">
+        <div class="dx-field">
+
+            <a>
+                <i *ngIf="data.data.pieceafournir" class="fa fa-star"style="color: red ;" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
+
+    <!--<dxi-column dataField="Nom fichier" caption="Nom fichier"></dxi-column>-->
+    <dxi-column dataField="nomfichierrattache" caption="Nom File" [allowFiltering]="false" height="50"
+                [allowSorting]="false" cellTemplate="" alignment="left"></dxi-column>
+
+
+    <dxi-column dataField="Actions" [allowFiltering]="false" [width]="170"
+                [allowSorting]="false" [allowResizing]="false" cellTemplate="cemplate" alignment="right"></dxi-column>
+    <div *dxTemplate="let data of 'cemplate'" >
+
+
+
+        <!--disque normal         -->
+        <i class="fa fa-paperclip"  data-toggle="tooltip" style="margin-right: 7%;" title="Rattacher" *ngIf="((data.data.nomfichierrattache==null && data.data.activite==null) ||  (data.data.activite=='Rattacher les PJs' && data.data.nomfichierrattache==null && data.data.version=='new' ) ||  (data.data.activite=='Mettre à Jour' && data.data.nomfichierrattache==null && data.data.version=='new' ) )&& modedocument"  (click)="click(data.data);input.click();"></i>
+
+
+        <!--disque nouvelle version -->
+        <i class="fa fa-retweet"  data-toggle="tooltip"  title="Rattacher nouvelle version" *ngIf="((data.data.activite=='Rattacher les PJs' && data.data.nomfichierrattache!=null && data.data.version=='old')||(data.data.activite=='Mettre à Jour' && data.data.nomfichierrattache!=null && data.data.version=='old') ) && modedocument "   style="color: red; margin-right: 7%;"
+           (click)="click(data.data);inputversion.click();"></i>
+
+
+
+        <!--Scan nouvelle version  -->
+        <a (click)="scannFileversion(data.data)" *ngIf="((data.data.activite=='Rattacher les PJs' && data.data.nomfichierrattache!=null && data.data.version=='old')||(data.data.activite=='Mettre à Jour' && data.data.nomfichierrattache!=null && data.data.version=='old') ) && modedocument "  ><img  src="assets/img3.png" height="20" width="20" style="margin-right: 7%;"/></a>
+
+
+        <!--Scan normal -->
+        <a (click)="scannFile(data.data)" *ngIf="((data.data.nomfichierrattache==null && data.data.activite==null) ||  (data.data.activite=='Rattacher les PJs' && data.data.nomfichierrattache==null && data.data.version=='new' ) ||  (data.data.activite=='Mettre à Jour' && data.data.nomfichierrattache==null && data.data.version=='new' ) )&& modedocument"  title="Scan" ><img  src="assets/Image1.png" height="20" width="20" style="margin-right: 7%;" /></a>
+        <!--        <i class="fa fa-file" data-toggle="tooltip" title="scan" (click)="onAcquireImagee(data.data)" style="margin-right: 17%;"></i>-->
+        <!--<i class="fa fa-trash" data-toggle="tooltip" title="Lock" *ngIf="hide_show_delete_grid(data.data.id)===true"  (click)="removeImage(testtab[data.data],data.data.id);"></i>-->
+
+
+        <i class="fa fa-trash" data-toggle="tooltip" title="Lock"  style="margin-right: 7%;" *ngIf="((data.data.nomfichierrattache!=null && data.data.activite==null) || (data.data.nomfichierrattache!=null && data.data.activite=='Rattacher les PJs' && data.data.version=='new' ) || (data.data.nomfichierrattache!=null && data.data.activite=='Mettre à Jour' && data.data.version=='new' ))&& modedocument" (click)="removeImage(testtab[data.data],data.data);"></i>
+
+
+
+        <!--        <i class="fa fa-pencil-square-o" data-toggle="tooltip" title="fiche signalétique "   (click)="fichesignaletique(data.data)" style="margin-right: 19%;"></i>-->
+
+        <!--<i class="fa fa-eye" data-toggle="tooltip" title="Show"  *ngIf="hide_show_eye_grid(data.data.id)===true" (click)="visualisationscangrid(data.data.id);"></i>-->
+        <i class="fa fa-eye" data-toggle="tooltip" title="Show"    style="margin-right: 7%;"  *ngIf="data.data.nomfichierrattache!=null" (click)="showFileInAlfresco(data.data);"></i>
+
+    </div>
+
+    <dxo-paging [pageSize]="20" ></dxo-paging>
+    <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100]" [showInfo]="true" [showNavigationButtons]="false" ></dxo-pager>
+</dx-data-grid>
+
+
+<!--(click)="tooltip3.toggle()-->
+<!--<pdf-viewer *ngIf="testpdf=true"   [src]="pdfsrc"-->
+<!--[render-text]="true"-->
+<!--style="display: block;"-->
+<!--&gt;</pdf-viewer>-->
+<!--<pdf-viewer   [src]="https://www.youtube.com"-->
+<!--[original-size]="false"-->
+<!--&gt;</pdf-viewer>-->
+
+<!--<ng-template #pdfContent style="">-->
+<!--<div class="modal-body bg-gray" style="width:1366px;height: 630px;margin-left: -80%;">-->
+<!--<iframe id="blah" width='1366px' height='623px' frameborder='0' style=""></iframe>-->
+<!--</div>-->
+<!--</ng-template>-->
+
+
+<ng-template #confirmmodal>
+    <div class="modal-header">
+        <h4 class="modal-title">SVP Confirmer</h4>
+        <!--<button type="button" class="close" aria-label="Close" (click)="dismiss()">-->
+        <!--<span aria-hidden="true">&times;</span>-->
+        <!--</button>-->
+    </div>
+    <div class="modal-body">
+        <b>Veuillez charger un papier si vous voulez scanner plus de documents</b>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" >Annuler</button>
+        <button type="button" class="btn btn-primary" >Valider</button>
+    </div>
+
+</ng-template>
+
+<ng-template  #namefileModel let-close="close" >
+    <!-- client metadata content -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="modal-header" id="modalscan" style="background: #ebe8e8 ;color: black">
+
+
+                <div class="col-md-12">
+                    <h4 > Entrer nom fichier scanné </h4>
+                </div>
+                <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->
+                <!--(click)="clear()"></button>-->
+                <!--        <div class="col-md-6">-->
+
+                <!--        <h4>visualisation</h4>-->
+
+                <!--        </div>-->
+
+            </div>
+
+
+
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <!--<div class="col-md-12">-->
+
+
+            <div class="col-md-6 ">
+                <!--<div class="col-lg-5 mb-4 form-group">-->
+                <input type="text" name="foldaName" [value]="varrautre" [disabled]="testvesionning==true" #NameFile/>
+
+                <!--</div>-->
+            </div>
+            <div class="col-md-6">
+                <!--<div class="col-lg-5 mb-4 form-group">-->
+
+                <button class="btn btn-primary" [hidden]="!testscann" type="button" (click)="pdfviewerr()">visualiser</button>
+
+            </div>
+
+            <!--</div>-->
+
+            <!--</div>-->
+            <!--</div>-->
+        </div >
+        <!--<iframe style="width: 100% ;"  scrolling="yes"  frameborder='0' height='623px'  [hidden]="!testscann">-->
+        <pdf-viewer   [src]="pdfsrc"
+                      [original-size]="false"
+                      [show-all]="true"
+
+        ></pdf-viewer>
+        <!--</iframe>-->
+    </div>
+
+    <div class="modal-footer">
+
+        <!--<div class="col-md-2 offset-12">-->
+        <button class="btn btn-primary"  [disabled]="NameFile.value==''" type="button" (click)="scan(NameFile.value)">scan</button>
+        <!--</div>-->
+
+    </div>
+
+
+
+</ng-template>
+
+
+
+
+
+
+
+
+<ng-template  #fichesignalique>
+    <!-- client metadata content -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="modal-header" style="background: #ebe8e8 ;color: black">
+
+
+                <div class="col-md-12">
+                    <h4 > Entrer nom fichier scanné </h4>
+                </div>
+                <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->
+                <!--(click)="clear()"></button>-->
+                <!--        <div class="col-md-6">-->
+
+                <!--        <h4>visualisation</h4>-->
+
+                <!--        </div>-->
+
+            </div>
+
+
+
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <!--<div class="col-md-12">-->
+
+
+            <div class="col-md-6 ">
+                <label>Nom</label>
+                <input type="text" name="nom"/>
+
+                <label>Titre</label>
+                <input type="text" name="titre"/>
+
+                <label>Description</label>
+                <input type="text" name="description"/>
+            </div>
+            <div class="col-md-6">
+                <!--<div class="col-lg-5 mb-4 form-group">-->
+
+                <button class="btn btn-primary" [hidden]="!testscann" type="button" (click)="saveFicheSyn()">sauvegarder</button>
+
+            </div>
+
+            <!--</div>-->
+
+            <!--</div>-->
+            <!--</div>-->
+        </div >
+    </div>
+
+    <div class="modal-footer">
+
+        <!--<div class="col-md-2 offset-12">-->
+        <!--</div>-->
+
+    </div>
+
+
+</ng-template>
+
+
+<ng-template  #visualisation let-close="close" >
+    <!-- client metadata content -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="modal-header" id="modalscann" style="background: #ebe8e8 ;color: black">
+
+
+                <div class="col-md-12">
+                    <h4 > visualisation </h4>
+                </div>
+                <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->
+                <!--(click)="clear()"></button>-->
+
+            </div>
+
+
+
+        </div>
+    </div>
+    <div class="modal-body">
+
+
+        <!--<iframe style="width: 100% ;"  scrolling="yes"  frameborder='0' height='623px'  [hidden]="!testscann">-->
+        <pdf-viewer   [src]="pdfsrcc"
+                      [original-size]="false"
+                      [show-all]="true"
+
+        ></pdf-viewer>
+        <!--</iframe>-->
+    </div>
+
+    <div class="modal-footer">
+
+        <!--<div class="col-md-2 offset-12">-->
+        <button class="btn btn-primary"  type="button" (click)="closemodalvisualisation()">Quitter</button>
+        <!--</div>-->
+
+    </div>
+
+
+
+</ng-template>
+
+<div class="form-group" enctype="multipart/form-data">
+
+    <div class="input-group file-upload ">
+
+
+        <input   id="hide" type="file"  (change)="fileChange(input)" #input  hidden class="file-upload-btn"/>
+
+        <input   id="hide1" type="file"  (change)="fileChangenewversion(inputversion)" #inputversion  hidden class="file-upload-btn"/>
+
+        <!--        <form [formGroup]="form" >-->
+
+        <!--            <div class="form-group">-->
+
+        <!--                <table class="table" style="max-width:100%;" >-->
+        <!--                    <thead >-->
+        <!--                    <tr>-->
+        <!--                        <th scope="col" >Obligatoire</th>-->
+        <!--                        <th scope="col" >Nom</th>-->
+        <!--                        &lt;!&ndash;                    <th scope="col">Numéro</th>&ndash;&gt;-->
+        <!--                        &lt;!&ndash;                    <th scope="col" >lieu</th>&ndash;&gt;-->
+        <!--                        &lt;!&ndash;                    <th scope="col"  >Nombre d'exemplaire</th>&ndash;&gt;-->
+        <!--                        <th  scope="col">Nom Fichier</th>-->
+        <!--                        <th scope="col" >Action</th>-->
+
+        <!--                    </tr>-->
+        <!--                    </thead>-->
+        <!--                    <tbody>-->
+        <!--                    <tr class="grid-panel" *ngFor="let h of pieceJoinNom; let i=index;"  >-->
+
+        <!--                        <td> <input type="checkbox" disabled></td>-->
+
+        <!--                        <td >{{h}}</td>-->
+
+        <!--                        &lt;!&ndash;        <td [hidden]="testhidden "><div class="input-group"><input  id="datePJ" class="form-control" placeholder="dd-mm-yyyy" name="dp" name ="datePJ"  #date&ndash;&gt;-->
+        <!--                        &lt;!&ndash;                               ngbDatepicker #p1="ngbDatepicker">&ndash;&gt;-->
+        <!--                        &lt;!&ndash;                        <div class="input-group-append" (click)="p1.toggle()"><span class="input-group-text"><i class="fa fa-calendar" ></i></span></div></div>&ndash;&gt;-->
+        <!--                        &lt;!&ndash;        </td>&ndash;&gt;-->
+        <!--                        &lt;!&ndash;                    <td [hidden]="testhidden"><input   type="text" class="form-control" id="numero" name ="numeroPj"   placeholder="" required #numero ></td>&ndash;&gt;-->
+
+        <!--                        &lt;!&ndash;                    <td  [hidden]="testhidden"><input   type="text" class="form-control" id="lieu" name ="lieuPj" placeholder="" required #lieu></td>&ndash;&gt;-->
+
+        <!--                        &lt;!&ndash;                    <td  [hidden]="testhidden"><input   type="number" class="form-control" id="nombreExemplaire" name ="nombreExemplaire" min ="0" max="10"  placeholder=""  required #nombreExemplaire></td>&ndash;&gt;-->
+        <!--                        <td> <div [hidden]="hiddenNameFile && var1==i"  >{{testtab[i]}} </div>-->
+
+        <!--                            &lt;!&ndash;                        <div [hidden]="hiddenNameFile && var1==i" *ngIf="nb>1">{{nb+" fichiers"}} </div>&ndash;&gt;-->
+
+        <!--                        </td>-->
+        <!--                        &lt;!&ndash;                    testhidden && var1==i&ndash;&gt;-->
+
+
+
+
+        <!--                        <td >-->
+        <!--                            <i class="fa fa-paperclip" style="color:#00BBD3;;margin-right: 10%" (click)="click(i);input.click();"></i>-->
+        <!--                            &lt;!&ndash;                        <i class="fa fa-save" style="color:red" (click)="save(date.value,numero.value,lieu.value,nombreExemplaire.value)"></i>&ndash;&gt;-->
+        <!--                            <i class="fa fa-print"  style="color:#00BBD3;margin-right: 10%" (click)="scan()"></i>-->
+        <!--                            <i class="fa fa-times delete-file" style="color:#00BBD3;" (click)="removeImage(testtab[i],i);input.value=''"></i>-->
+
+        <!--                        </td>-->
+
+
+        <!--                    </tr>-->
+
+        <!--                    &lt;!&ndash;<tr class="grid-panel" *ngFor="let image of images;">&ndash;&gt;-->
+
+        <!--                    &lt;!&ndash;<td  [hidden]="testhidden && var1==i" >{{tab[i]}}</td>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;<td  [hidden]="testhidden && var1==i" ></td>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;<td></td>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;<td></td>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;<td></td>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;<td><i *ngIf="(this.tab[i].substring(this.tab[i].lastIndexOf('.')+1,this.tab[i].length)).toUpperCase()!='DOC'" class="fa fa-eye" (click)="openFileModal(i,input,modalContent,modalContent1,modalContent2,modalContent3)"></i><i *ngIf="(this.tab[i].substring(this.tab[i].lastIndexOf('.')+1,this.tab[i].length)).toUpperCase()==='DOC'" class="fa fa-eye-slash"  (click)="openFileModal(i,input,modalContent,modalContent1,modalContent2,modalContent3)"></i></td>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;<td  [hidden]="!testhidden" *ngIf="var1===i">&ndash;&gt;-->
+        <!--                    &lt;!&ndash;<input name= "editFile" type="text"  [(ngModel)]="note" value="{{note}}" >&ndash;&gt;-->
+        <!--                    &lt;!&ndash;<i class="fa fa-check" (click)="validateupdateimage(i)"></i>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;<i class="fa fa-times delete-file" style="color:red" (click)="removeImage(i)"></i>&ndash;&gt;-->
+
+        <!--                    &lt;!&ndash;</td>&ndash;&gt;-->
+
+        <!--                    &lt;!&ndash;</tr>&ndash;&gt;-->
+        <!--                    </tbody>-->
+        <!--                </table>-->
+
+        <!--            </div>-->
+        <!--        </form>-->
+
+    </div>
+
+</div>
+
+
+<!--<app-formulaireclient hidden #fc></app-formulaireclient>-->
+
+
+

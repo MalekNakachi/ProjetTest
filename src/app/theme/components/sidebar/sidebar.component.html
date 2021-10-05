@@ -1,0 +1,13 @@
+<div class="sidebar-outer">
+    <a class="logo d-flex align-items-center" routerLink="/" (click)="closeSubMenus()" *ngIf="settings.theme.sidebarIsFixed">
+        <!--<span class="start">start</span><span class="ng">NG</span>-->
+        <img class="logo-img" src="assets/logo-new.png" alt="logo">
+        <!--<span class="lloyd-assurance">-->
+            <!--<h3 class="lloyd">Lloyd Tunisie</h3>-->
+            <!--<h6 class="assurance">assurance</h6>-->
+        <!--</span>-->
+    </a>
+    <app-vertical-menu [menuItems]="menuItems"></app-vertical-menu>
+    <app-horizontal-menu  [menuItems]="menuItems"></app-horizontal-menu>
+
+</div>
